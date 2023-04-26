@@ -1,30 +1,39 @@
 ﻿"use strict";
-
 var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+document.getElementById("messageInput").value = "Stablishing Connection...";
+var scrollableSection = document.querySelector('.scrollable-section');
 
-//Disable the send button until connection is established.
-document.getElementById("sendButton").disabled = true;
+var WaitForMessageSent;
 
-connection.on("ReceiveMessage", function (user, message) {
-    var li = document.createElement("li");
-    document.getElementById("messagesList").appendChild(li);
-    // We can assign user-supplied strings to an element's textContent because it
-    // is not interpreted as markup. If you're assigning in any other way, you 
-    // should be aware of possible script injection concerns.
-    li.textContent = `${user} : ${message}`;
+
+connection.on("ReceiveMessage", function (user, message, date) {
+    var li = document.createElement("p");
+    document.getElementById("messageList").appendChild(li);
+    li.textContent = `${user} : ${message} - ${date} `;
+    if(WaitForMessageSent == true) scrollableSection.scrollTop = scrollableSection.scrollHeight;
 });
 
-connection.start().then(function () {
-    document.getElementById("sendButton").disabled = false;
-}).catch(function (err) {
+connection.start().then(function () { document.getElementById("messageInput").value = ""; }).catch(function (err) {
     return console.error(err.toString());
 });
 
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    var user = document.getElementById("userInput").value;
-    var message = document.getElementById("messageInput").value;
-    connection.invoke("SendMessage", user, message).catch(function (err) {
-        return console.error(err.toString());
+
+
+    document.getElementById("messageInput").addEventListener("keydown", function (event) {
+    if (event.key == "Enter") {
+        WaitForMessageSent = true;
+        var user = document.getElementById("userInput").value;
+        var message = document.getElementById("messageInput").value;
+        var currentTime = new Date();
+        var hour = currentTime.getHours();
+        var minute = currentTime.getMinutes();
+        var second = currentTime.getSeconds();
+        var date = `${hour}:${minute}:${second}`;
+        connection.invoke("SendMessage", user, message, date).catch(function (err) {
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+        document.getElementById("messageInput").value = message = "";
+        }
     });
-    event.preventDefault();
-});
+
