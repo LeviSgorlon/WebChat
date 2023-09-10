@@ -1,64 +1,28 @@
 ﻿@model IEnumerable<WebChat.Models.ChatEntryModel>
 
-<style>
-    .scrollable-section {
-        height: 300px; /* Adjust height to fit 4 lines */
-        overflow-y: scroll; /* Enable vertical scrolling */
-        overflow-x: hidden;
-        border: 1px solid #6495ED; /* Add border for styling */
-        padding: 10px; /* Add padding for content */
-    }
-        /* Style the scrollbar */
-        .scrollable-section::-webkit-scrollbar {
-            width: 2px; /* Set the width of the scrollbar */
-        }
-
-        /* Style the thumb */
-        .scrollable-section::-webkit-scrollbar-thumb {
-            background-color: #6495ED; /* Set the color of the thumb */
-            border-radius: 5px; /* Add border-radius for rounded corners */
-        }
-
-        /* Style the track */
-        .scrollable-section::-webkit-scrollbar-track {
-            background-color: #eee; /* Set the color of the track */
-        }
-
-</style>
-
-
-
-<div class="scrollable-section">
+<body>
+    <br>
+    <br>
+    <div class="chat-header"> <span class="user-container">
+            <label for="username" class="username-label">Name: </label>
+            <input type="text" id="userInput" name="username" class="username-input"/>
+        </span></div><br>
+<div class="chat-container">
     <div class="row p-1">
-        <div class="col-6">
+        <div><br>
             @foreach (var item in Model) {
-                <p>
-                @Html.DisplayFor(modelItem => item.User) :      
-                @Html.DisplayFor(modelItem => item.Message) -       
-                @Html.DisplayFor(modelItem => item.Time)
+                <p class = "chat-message">
+                <span class="chat-user">  @Html.DisplayFor(modelItem => item.User) > </span>
+                <span class="chat-content"> @Html.DisplayFor(modelItem => item.Message)</span>
+                <span class="chat-time"> - @Html.DisplayFor(modelItem => item.Time)</span>
                 </p>
             }
-            <div id="messageList"></div>
         </div>
+        <p id="messageList"></p>
     </div>
 </div>
- 
-<div class="container">
-    <div class="row p-1">
-        <div class="col-8">
-            <hr />
-        </div>
-    </div>
-    <div class="row p-1">
-        <div class="col-1">User</div>
-        <div class="col-5"><input type="text" id="userInput" /></div>
-    </div>
-
-    <div class="row p-1">
-        <div class="col-8">
-            <input type="text" class="w-100" id="messageInput" />
-        </div>
-    </div>
-</div>
+<br>
+<div class= "chat-input"><br><input type="text" class="w-100" id="messageInput" /></div>
+</body>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>

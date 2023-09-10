@@ -35,7 +35,7 @@ else
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=ChatEntryModels}/{action=Chat}/{id?}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -43,6 +43,7 @@ app.UseRouting();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapHub<ChatHub>("/chatHub");
-
-
 app.Run();
+
+ 
+

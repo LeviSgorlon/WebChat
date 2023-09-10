@@ -135,6 +135,7 @@ namespace WebChat.Controllers
 
             return View(chatEntryModel);
         }
+     
 
         // POST: ChatEntryModels/Delete/5
         [HttpPost, ActionName("Delete")]
